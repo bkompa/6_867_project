@@ -1,0 +1,76 @@
+exp_setting:
+  exp_name: 'tcga'                         # Expriment title, log/checkpoint files will be named after this
+  checkpoint_dir: 'checkpoint/'               # Folder for model checkpoints
+  log_dir: 'log/'                             # Folder for training logs
+  data_root: 'data/'
+  seed: 1
+  img_size: -1 # What should this be? Can it be removed? Not used as long as no cnn
+  img_depth: 1000 # May want to rename this to input_dim or something
+  domain_a: 'brca'
+  doamin_b: 'dlbc'
+  doamin_c: 'gbm'
+
+model:
+  vae:
+    encoder: [['fc', 500, 'bn', 'LeakyReLU'], # input dimension is img_depth
+              ['fc', 100, '', '']
+             ]
+    code_dim: 3 # Number of domains, right?
+    decoder: [['fc', 500, 'bn', 'LeakyReLU',True],
+              ['fc', 1000, '', '',False]
+             ]
+    lr: 0.0001
+    betas: [0.5,0.999]
+  D_feat:
+    dnn: [['fc', 64, '', 'LeakyReLU',0], # input dimension is dim(z)=enc_dim=dim of last layer of encoder
+          ['fc', 3, '', '', 0]
+         ]
+    lr: 0.0001
+    betas: [0.5,0.999]
+
+  D_pix:
+    dnn: [['fc', 500, '', 'LeakyReLU',0], # input dimension is img_depth
+          ['fc', 100, '', 'LeakyReLU',0],
+          ['fc', [1,3], '', '',0]
+         ]
+    lr: 0.0001
+    betas: [0.5,0.999]
+
+trainer:
+  total_step: 5000
+  batch_size: 1
+
+  lambda:
+    pix_recon:
+      init:  100
+      final: 1
+      step:  1000
+    kl:
+      init:  0.000001
+      final: 0.000001
+      step:  1
+    feat_domain:
+      init:  0
+      final: 1
+      step:  10000
+    gp:
+      init: 100
+      final: 100
+      step: 1
+    pix_adv:
+      init: 0
+      final: 0.000001
+      step: 10000
+    pix_clf:
+      init: 0
+      final: 0.000001
+      step: 10000
+
+  verbose_step: 500
+  plot_step: 20000
+  checkpoint_step: 1000
+  save_log: True
+  show_fig: True
+  save_fig: True
+  save_checkpoint: True
+  save_best_only: False
