@@ -62,7 +62,8 @@ c_test = LoadDataset('tcga',data_root,batch_size,'test',style=doamin_c)
 
 
 for d1,d2,d3 in zip(a_test,b_test,c_test):
-    a_test_sample = d1[9].type(torch.FloatTensor)
+    #a_test_sample = d1[9].type(torch.FloatTensor)
+    a_test_sample = d1[0].type(torch.FloatTensor) # Hack so it will run. Idk what this does.
     b_test_sample = d2[0].clone().repeat(3,1,1).type(torch.FloatTensor)
     c_test_sample = d3[0].type(torch.FloatTensor)
     break
@@ -175,7 +176,8 @@ while global_step < trainer_conf['total_step']:
         
         # data augmentation
         input_img = torch.cat([a_img.type(torch.FloatTensor),
-                               b_img.clone().repeat(1,3,1,1).type(torch.FloatTensor),
+                               #b_img.clone().repeat(1,3,1,1).type(torch.FloatTensor),
+                               b_img.type(torch.FloatTensor), # Another hack to get it to run
                                c_img.type(torch.FloatTensor)],dim=0)
         input_img =  Variable(input_img.cuda(),requires_grad=False)
 
