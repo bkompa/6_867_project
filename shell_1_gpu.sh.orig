@@ -38,3 +38,4 @@ source venv6/bin/activate # Change venv6 to your python virtual environment (whi
 python3 train_tcga.py config/tcga.yaml # Select the .yaml file here
 
 deactivate
+>>>>>>> FETCH_HEAD
