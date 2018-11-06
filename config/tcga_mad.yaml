@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 exp_setting:
   exp_name: 'tcga'                         # Expriment title, log/checkpoint files will be named after this
   checkpoint_dir: 'checkpoint/'               # Folder for model checkpoints
@@ -75,11 +74,3 @@ trainer:
   save_fig: True
   save_checkpoint: True
   save_best_only: False
-=======
-exp_setting:
-  exp_name: 'tcga'                         # Expriment title, log/checkpoint files will be named after this
-  checkpoint_dir: 'checkpoint/'               # Folder for model checkpoints
-  log_dir: 'log/'                             # Folder for training logs
-  data_root: 'data/'
-  seed: 1
-
